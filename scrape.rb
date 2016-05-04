@@ -25,6 +25,10 @@ end
 # load post data from url
 def load_posts(id)
   url = DOMAIN + "/#{id}"
+  #if File.exist?("./out/#{id}.xml")
+  #  p "skip id(file exists):#{id}"
+  #  return
+  #end
   p "loading #{url}"
   agent = Mechanize.new
   begin
@@ -42,11 +46,13 @@ def load_posts(id)
       text = page.at("body").to_html
     end
     buffer = <<-EOT
+    <item>
     <title><![CDATA[#{title}]]></title>
     <link>#{url}</link>
     <guid isPermaLink="true">#{url}</guid>
     <pubDate>#{date}</pubDate>
     <description><![CDATA[#{text}]]></description>
+    </item>
     EOT
     File.write("./out/#{id}.xml", buffer)
   rescue
