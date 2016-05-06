@@ -1,3 +1,4 @@
+# encoding: UTF-8
 ###
 # load all posts from tumblr
 ###
@@ -43,7 +44,7 @@ def load_posts(id)
       text = page.at("article div.photo").to_html + page.at("article div.captions").to_html
     else
       # video post
-      text = page.at("body").to_html
+      text = page.at("body").inner_html
     end
     buffer = <<-EOT
     <item>
@@ -54,7 +55,9 @@ def load_posts(id)
     <description><![CDATA[#{text}]]></description>
     </item>
     EOT
-    File.write("./out/#{id}.xml", buffer)
+    File.open("./out/#{id}.xml", "w:UTF-8") do |file|
+      file.print buffer
+    end
   rescue
     p "Error: we coudn't parse content from this url:#{url}"
   end
