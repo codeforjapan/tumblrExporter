@@ -32,6 +32,7 @@ def load_posts(id)
   #end
   p "loading #{url}"
   agent = Mechanize.new
+  images = []
   begin
     page = agent.get(url)
     title = page.at("title").text
@@ -42,6 +43,10 @@ def load_posts(id)
     elsif (page.at("article div.photo"))
       # photo post
       text = page.at("article div.photo").to_html + page.at("article div.captions").to_html
+      puts 'photo'
+      images = page.images_with(:src => /.*media.tumblr.com\/.*\/tumblr_.*/).each do |img|
+        img.fetch.save("./out/" + img.to_s.gsub("/","_").gsub(":",""))
+      end
     else
       # video post
       text = page.at("body").inner_html
@@ -58,7 +63,8 @@ def load_posts(id)
     File.open("./out/#{id}.xml", "w:UTF-8") do |file|
       file.print buffer
     end
-  rescue
+  rescue => e
+    p e.message
     p "Error: we coudn't parse content from this url:#{url}"
   end
 end
