@@ -1,4 +1,6 @@
 # tumblrExporter
+| ⚠️ This repository will be archived in the future, this config will no longer be maintained. Thanks for all the stars, help and brainstorms! |
+
 Code for Japan Webサイトの Tumblr から個別のデータを抜き出すスクリプトです。
 
 通常のTumblrのRSSでは、[[MORE]]以降が表示されない、長いタイトルが削られるといったことがあったため、スクレイピングして取得するスクリプトを組みました。
